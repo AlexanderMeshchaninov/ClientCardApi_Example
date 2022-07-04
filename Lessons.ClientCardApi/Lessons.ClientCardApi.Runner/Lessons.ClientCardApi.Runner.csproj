@@ -1,0 +1,49 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Lessons.ClientCardApi.Runner</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+      <UserSecretsId>e14b367d-e725-4901-be40-d645056cde09</UserSecretsId>
+  </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'Lessons.ClientCardApi-Development' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'Lessons.ClientCardApi-Staging' " />
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' " />
+    <ItemGroup>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AuthMigrations\AuthMigrations.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.CommonLogic.Facades\Lessons.ClientCardApi.CommonLogic.Facades.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.Core\Lessons.ClientCardApi.Core.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.Data.AuthContext\Lessons.ClientCardApi.Data.AuthContext.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.Data.Context\Lessons.ClientCardApi.Data.Context.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.Consul\Lessons.ClientCardApi.NuGet.Consul.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.FluentValidator\Lessons.ClientCardApi.NuGet.FluentValidator.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.JwtBearer\Lessons.ClientCardApi.NuGet.JwtBearer.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.Nuget.Metrics\Lessons.ClientCardApi.Nuget.Metrics.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.Nest\Lessons.ClientCardApi.NuGet.Nest.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.Serilog\Lessons.ClientCardApi.NuGet.Serilog.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.UnitOfWork\Lessons.ClientCardApi.UnitOfWork.csproj" />
+      <ProjectReference Include="..\Migrations\Migrations.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="LOGS" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Properties\launchSettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="..\.dockerignore" />
+    </ItemGroup>
+
+</Project>

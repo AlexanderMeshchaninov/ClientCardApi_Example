@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Lessons.ClientCardApi.CommonLogic.Facades</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lessons.ClientCardApi.Core\Lessons.ClientCardApi.Core.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.Data.Repository\Lessons.ClientCardApi.Data.Repository.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.AutoMapper\Lessons.ClientCardApi.NuGet.AutoMapper.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.FluentValidator\Lessons.ClientCardApi.NuGet.FluentValidator.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.Nuget.Metrics\Lessons.ClientCardApi.Nuget.Metrics.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.Nest\Lessons.ClientCardApi.NuGet.Nest.csproj" />
+      <ProjectReference Include="..\Lessons.ClientCardApi.UnitOfWork\Lessons.ClientCardApi.UnitOfWork.csproj" />
+    </ItemGroup>
+
+</Project>

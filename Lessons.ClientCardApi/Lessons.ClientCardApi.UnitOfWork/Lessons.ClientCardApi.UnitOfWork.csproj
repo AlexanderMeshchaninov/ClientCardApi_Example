@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Lessons.ClientCardApi.UnitOfWork</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lessons.ClientCardApi.Data.Repository\Lessons.ClientCardApi.Data.Repository.csproj" />
+    </ItemGroup>
+
+</Project>

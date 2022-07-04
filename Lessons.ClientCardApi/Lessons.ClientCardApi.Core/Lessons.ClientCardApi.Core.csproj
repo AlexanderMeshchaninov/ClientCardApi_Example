@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>Lessons.ClientCardApi.Abstraction</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Lessons.ClientCardApi.NuGet.Identity\Lessons.ClientCardApi.NuGet.Identity.csproj" />
+    </ItemGroup>
+
+</Project>

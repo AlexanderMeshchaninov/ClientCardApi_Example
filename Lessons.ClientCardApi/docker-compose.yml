@@ -1,0 +1,136 @@
+version: '3.4'
+
+services:
+    clientcardapi:
+        image: lessonsclientcardapirunner:latest
+        container_name: clientcardapi.runner
+        build:
+            context: .
+            dockerfile: Lessons.ClientCardApi.Runner/Dockerfile
+        environment:
+          - ASPNETCORE_ENVIRONMENT=Development
+          - ASPNETCORE_URLS=https://+:443;http://+:80
+        ports:
+          - "5000:80"
+          - "5001:443"
+        volumes:
+          - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+          - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        networks:
+            - clientcardapi
+
+    postgresqldb:
+        image: postgres:latest
+        container_name: postgres.db
+        restart: always
+        environment:
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=test
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres-data:/var/lib/postgresql/data/
+        networks:
+            - clientcardapi
+
+    pgadmin:
+        image: dpage/pgadmin4:latest
+        container_name: pgadmin
+        restart: always
+        environment:
+            - PGADMIN_DEFAULT_EMAIL=pgadmin4@pgadmin.org
+            - PGADMIN_DEFAULT_PASSWORD=test
+        ports:
+            - "5050:80"
+        depends_on:
+            - postgresqldb
+        volumes:
+            - pgadmin-data:/root/.pgadmin
+        networks:
+            - clientcardapi
+
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
+        container_name: elastic.search
+        restart: always
+        ports:
+            - "9200:9200"
+        volumes:
+            - elastic-data:/usr/share/elasticsearch/data
+        environment:
+            - xpack.monitoring.enabled=true
+            - xpack.watcher.enabled=false
+            - xpack.security.enabled=false
+            - discovery.type=single-node
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        networks:
+            - clientcardapi
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.5.2
+        container_name: kibana
+        restart: always
+        ports:
+            - "5601:5601"
+        depends_on:
+            - elasticsearch
+        environment:
+            - ELASTICSEARCH_URLS=http://elasticsearch:9200
+        networks:
+            - clientcardapi
+
+    prometheus:
+        image: prom/prometheus:latest
+        container_name: prometheus
+        volumes:
+            - ./prometheus-grafana/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+        ports:
+            - "9090:9090"
+        networks:
+            - clientcardapi
+
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        volumes:
+            - ./prometheus-grafana/grafana/grafana.ini:/etc/grafana/grafana.ini
+            - ./prometheus-grafana/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yaml
+        ports:
+            - "3000:3000"
+        links:
+            - prometheus
+        networks:
+            - clientcardapi
+
+    consul-server:
+        image: hashicorp/consul:1.10.0
+        container_name: consul-server
+        restart: always
+        volumes:
+            - ./server.json:/consul/config/server.json:ro
+        networks:
+            - clientcardapi
+        ports:
+            - "8500:8500"
+            - "8600:8600/tcp"
+            - "8600:8600/udp"
+        command: "agent"
+    
+    consul-client:
+        image: hashicorp/consul:1.10.0
+        container_name: consul-client
+        restart: always
+        volumes:
+            - ./client.json:/consul/config/client.json:ro
+        networks:
+            - clientcardapi
+        command: "agent"
+
+networks:
+    clientcardapi:
+        driver: bridge
+
+volumes:
+    postgres-data:
+    pgadmin-data:
+    elastic-data:
